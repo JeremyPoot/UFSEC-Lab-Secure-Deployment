@@ -12,7 +12,9 @@ jobs:
       - name: Sign in to Azure
         uses: Azure/login@v3
         with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Push to ACR
         run: |
           docker tag myapp:latest labdeployacrjeremy.azurecr.io/myapp:latest
