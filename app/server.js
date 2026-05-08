@@ -2,18 +2,21 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const { exec } = require('child_process');
-
-// insecure: executes arbitrary command from query string
+const dns = require('dns');
+ 
 app.get('/ping', (req, res) => {
-  const host = req.query.host;
-  exec(`ping -c 1 ${host}`, (err, stdout, stderr) => {
-    if (err) {
-      res.status(500).send(`Error: ${stderr}`);
-      return;
-    }
-    res.send(`Output: ${stdout}`);
-  });
+const host = req.query.host;
+if (!host) return res.status(400).send('host required');
+ 
+// very basic validation: host must look like a hostname or IP
+if (!/^[A-Za-z0-9.-]{1,253}$/.test(host)) {
+return res.status(400).send('invalid host');
+}
+ 
+dns.lookup(host, (err, address) => {
+if (err) return res.status(500).send('lookup failed');
+res.send(`Resolved ${host} -> ${address}`);
+});
 });
 
 // insecure: allows all origins
