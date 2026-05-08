@@ -17,8 +17,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: labdeployacrjeremy.azurecr.io
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{secrets.ACR_PASSWORD}}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{secrets.ACR_PWD}}
       - name: Push to ACR
         run: |
           docker tag myapp:latest labdeployacrjeremy.azurecr.io/myapp:latest
