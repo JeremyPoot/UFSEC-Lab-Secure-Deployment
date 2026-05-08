@@ -1,6 +1,9 @@
 name: Build and Deploy
 on: 
   workflow_dispatch: 
+permissions:
+  contents: read
+  security-events: write
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -31,4 +34,10 @@ jobs:
           --container-image-name labdeployacrjeremy.azurecr.io/myapp:latest \
           --container-registry-url https://labdeployacrjeremy.azurecr.io \
           --container-registry-user ${{secrets.ACR_USER}} \
-          --container-registry-password ${{secrets.ACR_PWD}}
+          --container-registry-password ${{secrets.ACR_PWD}}    
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
