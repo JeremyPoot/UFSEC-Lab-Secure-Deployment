@@ -13,6 +13,12 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login2ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: labdeployacrjeremy.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{secrets.ACR_PASSWORD}}
       - name: Push to ACR
         run: |
           docker tag myapp:latest labdeployacrjeremy.azurecr.io/myapp:latest
